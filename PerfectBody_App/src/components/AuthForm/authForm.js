@@ -3,7 +3,10 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import DiaryScreen from "../DiaryScreen";
 import CulcScreen from "../CulcScreen";
-
+import RegisterPage from "../../pages/RegisterPage"
+import {View} from 'react-native';
+import LoginPage from '../../pages/LoginPage';
+import InitialInfo from './../initialInfo/InitialInfo';
 
 
 
@@ -12,15 +15,29 @@ const Tab = createMaterialBottomTabNavigator();
 
 function AuthFrom() {
   return (
+  
+
+
     <Tab.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="Culc"
       activeColor="#e1f500"
       labelStyle={{ fontSize: 12 }}
       barStyle={{ backgroundColor: 'tomato' }}
     >
+         <Tab.Screen
+        name="Culc"
+        component={InitialInfo}
+        options={{
+          headerTitle: "culc",
+          tabBarLabel: 'Culc',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="map" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Login"
-        component={DiaryScreen}
+        component={LoginPage}
         options={{
           headerTitle: "Login",
           tabBarLabel: 'Login',
@@ -31,7 +48,7 @@ function AuthFrom() {
       />
         <Tab.Screen
         name="Regist"
-        component={CulcScreen}
+        component={RegisterPage}
         options={{
           tabBarLabel: 'Regist',
           tabBarIcon: ({ color, size }) => (
@@ -39,8 +56,9 @@ function AuthFrom() {
           ),
         }}
       />
-      
+          
     </Tab.Navigator>
+
   );
 }
 export default AuthFrom;

@@ -5,9 +5,6 @@ import DiaryScreen from "./DiaryScreen";
 import ProgressScreen from "./ProgressScreen";
 import CulcScreen from "./CulcScreen";
 
-
-
-
 const Tab = createMaterialBottomTabNavigator();
 
 

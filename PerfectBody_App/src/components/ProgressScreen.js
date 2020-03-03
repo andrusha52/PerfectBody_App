@@ -1,6 +1,8 @@
-import React from 'react'
+import React from 'react';
+import {connect} from 'react-redux'
 import {Text,View, TouchableOpacity} from "react-native"
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
+import ButtonScreen from './ButtonScreen';
 
 
 
@@ -15,9 +17,10 @@ function ProgressScreen(props) {
          <TouchableOpacity onPress={props.navigation.goBack} style={{position:"absolute", top:27,left:10,padding:10}}>
          <MaterialCommunityIcons name="arrow-left" color={"#e1f500"} size={14} />
          </TouchableOpacity>
-    <Text style={{paddingTop:35, color:"#e1f500",}}>{props.route.name}</Text>
+    <Text style={{paddingTop:35, color:"#e1f500",}}>{props.route.name}</Text>   
+  { props.isAuth && <ButtonScreen />}
     </View>
-   
+
 
 
     </View>
@@ -25,4 +28,8 @@ function ProgressScreen(props) {
     )
   }
 
-export default ProgressScreen;
+  const mapStateToProps = (state) => ({
+    isAuth: state.auth.isAuthenticated
+  })
+  
+export default connect(mapStateToProps)(ProgressScreen);
