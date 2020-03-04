@@ -34,6 +34,7 @@ const initialState = {
   desiredWeight:"",
   groupBlood: "",
   dailyRate: "",
+  productsByBloodType: []
 };
 
 class CulcScreen extends Component {
@@ -68,6 +69,49 @@ class CulcScreen extends Component {
       isModalVisible: !prevState.isModalVisible
     }));
 
+    if (this.state.groupBlood === 1) {
+      this.setState({
+        productsByBloodType: [
+          "Овсяная, пшенная, кукурузная каши",
+          "Рожь и чечевица",
+          "Бобы",
+          "Жирные молочные продукты",
+          "Все виды капусты и яблоки"
+        ]
+      });
+    }
+
+    else if (this.state.groupBlood === 2) {
+      this.setState({
+        productsByBloodType: [
+          "Все виды мяса",
+          "Капуста",
+          "Жирные молочные продукты"
+        ]
+      });
+    }
+
+    else if (this.state.groupBlood === 3) {
+      this.setState({
+        productsByBloodType: [
+          "Крупы (особенно пшеница, гречка)", 
+           "Орехи (стоит избегать арахиса)", 
+           "Выпечка",
+           "Некоторые виды мяса (говядина, индейка)"
+        ]
+      });
+    }
+
+    else if (this.state.groupBlood === 4) {
+      this.setState({
+        productsByBloodType: [
+          'Некоторые крупы (гречка, кукуруза)', 
+          'Фасоль', 
+          'Кунжут' 
+        ]
+      });
+    }
+
     // const calculated =
     // (10 * this.state.currentWeight + 6,
     // 25 * this.state.height -
@@ -101,14 +145,14 @@ handleChange = (name, value) => {
   
 };
 render() {
-console.log(this.state)
   const {
     height,
     age,
     currentWeight,
     desiredWeight,
     groupBlood,
-    isModalVisible
+    isModalVisible,
+    productsByBloodType
   } = this.state;
  
     return (
@@ -116,7 +160,7 @@ console.log(this.state)
       
 
       <View style={{alignSelf:"stretch", height:70,backgroundColor:"tomato" , alignItems:"center",padding:0,margin:0 }}>
-      <TouchableOpacity onPress={()=>this.props.navigation.goBack} style={{position:"absolute", top:27,left:10,padding:10}}>
+      <TouchableOpacity onPress={this.props.props.navigation.goBack} style={{position:"absolute", top:27,left:10,padding:10}}>
      <MaterialCommunityIcons name="arrow-left" color={"#e1f500"} size={14} />
      </TouchableOpacity>
      {this.props.isAuth ? <Text style={{paddingTop:35, color:"#e1f500"}}>{this.props.route.name}</Text> : <Text style={{paddingTop:35, color:"#e1f500"}}>{this.props.props.route.name}</Text> }
@@ -197,7 +241,10 @@ console.log(this.state)
           <CalcModalResult
             JumpTo={this.props.navigation.jumpTo}
             dailyRate={this.state.dailyRate}
+            productsByBloodType={productsByBloodType}
+          
           />
+          
         )}
     
       </ScrollView>
