@@ -8,12 +8,12 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 // screens
-import  DiaryScreen  from "../screens/DiaryScreen";
-import CulcScreen from "../components/CulcScreen";
+import DiaryScreen from "../screens/DiaryScreen";
 import { ProgressScreen } from "../screens/ProgressScreen";
 import InitialInfo from "../components/initialInfo/initialInfo";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
+import CalcModalResult from "../components/CalcModalResult";
 // options
 import { screenOptions } from "./options/screenOptions";
 import { authScreenOptions } from "./options/authScreenOptions";
@@ -54,10 +54,16 @@ function authCalcStackScreen() {
         options={authScreenOptions("Калькулятор")}
       />
 
-<AuthStackCalc.Screen
-        name="Войти"
-        component={LoginPage}
-        options={authScreenOptions("Войти")}
+      <AuthStackCalc.Screen
+        name="Регистрация"
+        component={RegisterPage}
+        options={authScreenOptions("Регистрация")}
+      />
+
+      <StackLogin.Screen
+        name="Результат"
+        component={CalcModalResult}
+        options={authScreenOptions("Результат")}
       />
     </AuthStackCalc.Navigator>
   );
@@ -116,7 +122,7 @@ const authBottomTab = (
   <>
     <AppTabBottomNavigator.Screen
       name="calcStackScreen"
-      component={authCalcStackScreen}   
+      component={authCalcStackScreen}
       options={bottomTabOptions("Калькулятор", "ios-calculator")}
     />
     <AppTabBottomNavigator.Screen

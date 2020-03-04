@@ -10,8 +10,8 @@ import {
 import SearchableDropdown from "react-native-searchable-dropdown";
 import axios from "axios";
 import { FlatGrid } from "react-native-super-grid";
-import { MaterialCommunityIcons} from "@expo/vector-icons";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 class SearchAdd extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class SearchAdd extends Component {
       selectedItems: [],
       inputValue: "",
       dayIngredients: [],
-      weight: "100",
+      weight: "100"
     };
   }
 
@@ -68,7 +68,7 @@ class SearchAdd extends Component {
           }
         }
       )
-      .then(this.setState({ selectedItems: [], weight: 100, inputValue:"" }));
+      .then(this.setState({ selectedItems: [], weight: 100, inputValue: "" }));
     await this.props.getDayIngredients();
   };
 
@@ -76,53 +76,55 @@ class SearchAdd extends Component {
     return (
       <>
         <Fragment>
-          <SearchableDropdown
-            onItemSelect={item => {
-              this.setState({ selectedItems: [item] });
-            }}
-            containerStyle={{ padding: 5 }}
-            onRemoveItem={(item, index) => {
-              const items = this.state.selectedItems.filter(
-                sitem => sitem.id !== item.id
-              );
-              this.setState({ selectedItems: items });
-            }}
-            itemStyle={SearchAddStyle.searchIteamAdd}
-            itemTextStyle={{ color: "#222" }}
-            itemsContainerStyle={{ maxHeight: 140 }}
-            items={this.state.searchArr}
-            defaultIndex={2}
-            resetValue={false}
-            textInputProps={{
-              placeholder: "Добавьте продукт.",
-              underlineColorAndroid: "transparent",
-              style:SearchAddStyle.inputSearchIngrid,
-              onTextChange: text => {
-                this.searchIteam(text);
-                this.setState({
-                  inputValue: text
-                });
-              }
-            }}
-            listProps={{
-              nestedScrollEnabled: true
-            }}
-          />
+          <View style={SearchAddStyle.searchBlock}>
+            <SearchableDropdown
+              onItemSelect={item => {
+                this.setState({ selectedItems: [item] });
+              }}
+              containerStyle={{ padding: 5 }}
+              onRemoveItem={(item, index) => {
+                const items = this.state.selectedItems.filter(
+                  sitem => sitem.id !== item.id
+                );
+                this.setState({ selectedItems: items });
+              }}
+              itemStyle={SearchAddStyle.searchIteamAdd}
+              itemTextStyle={{ color: "#222" }}
+              itemsContainerStyle={{ maxHeight: 140 }}
+              items={this.state.searchArr}
+              defaultIndex={2}
+              resetValue={false}
+              textInputProps={{
+                placeholder: "Добавьте продукт",
+                underlineColorAndroid: "transparent",
+                style: SearchAddStyle.inputSearchIngrid,
+                onTextChange: text => {
+                  this.searchIteam(text);
+                  this.setState({
+                    inputValue: text
+                  });
+                }
+              }}
+              listProps={{
+                nestedScrollEnabled: true
+              }}
+            />
+          </View>
         </Fragment>
-          <View style={SearchAddStyle.sectionSelectedItem}>
-            <FlatGrid
-              items={this.state.selectedItems}
-              renderItem={({ item }) => (
-                <>
-                  <View
-                    style={SearchAddStyle.selectedItem}
-                  >
-                    <View style={SearchAddStyle.sectionSelectedItemBorder}>
-                    <Text  style={SearchAddStyle.selectedItemText}>Продукт :</Text>
-                    <Text >{item.label}</Text>
-                    </View>
-                    <View style={SearchAddStyle.sectionSelectedItemBorder}>
-                      <Text  style={SearchAddStyle.selectedItemText}>Грамм :</Text>
+        <View style={SearchAddStyle.sectionSelectedItem}>
+          <FlatGrid
+            items={this.state.selectedItems}
+            renderItem={({ item }) => (
+              <>
+                <View style={SearchAddStyle.selectedItem}>
+                  <View style={SearchAddStyle.sectionSelectedItemBorder}>
+                    <Text style={SearchAddStyle.selectedItemText}>
+                      Продукт :
+                    </Text>
+                    <Text>{item.label}</Text>
+                  </View>
+                  <View style={SearchAddStyle.sectionSelectedItemBorder}>
+                    <Text style={SearchAddStyle.selectedItemText}>Грамм :</Text>
                     <TextInput
                       style={SearchAddStyle.inputGram}
                       onChange={e =>
@@ -134,30 +136,40 @@ class SearchAdd extends Component {
                       keyboardType="number-pad"
                       autoFocus={true}
                       maxLength={5}
-                    /></View>
-                    <TouchableOpacity
-                      id={item.value}
-                      onPress={() =>setTimeout(() => { this.onRemoveItem(item.value); }, 0) } style={SearchAddStyle.btnDeleteSelect} >
-                      <MaterialCommunityIcons name="delete" size={15} color="white" />
-                    </TouchableOpacity>
+                    />
                   </View>
-                </>
-              )}
-              keyExtractor={item => item.value}
-            />
+                  <TouchableOpacity
+                    id={item.value}
+                    onPress={() =>
+                      setTimeout(() => {
+                        this.onRemoveItem(item.value);
+                      }, 0)
+                    }
+                    style={SearchAddStyle.btnDeleteSelect}
+                  >
+                    <MaterialCommunityIcons
+                      name="delete"
+                      size={15}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
+            keyExtractor={item => item.value}
+          />
 
-            <View style={{ alignItems: "center" }}>
-              {this.state.selectedItems.length > 0 && (
-                <TouchableOpacity
-                  style={SearchAddStyle.btnAdd}
-                  onPress={this.addIngredientsToDATA}
-                >
-                   <MaterialCommunityIcons name="plus" size={31} color="white"/>
-                </TouchableOpacity>
-              )}
-            </View>
+          <View style={{ alignItems: "center" }}>
+            {this.state.selectedItems.length > 0 && (
+              <TouchableOpacity
+                style={SearchAddStyle.btnAdd}
+                onPress={this.addIngredientsToDATA}
+              >
+                <MaterialCommunityIcons name="plus" size={31} color="white" />
+              </TouchableOpacity>
+            )}
           </View>
-
+        </View>
       </>
     );
   }
@@ -165,24 +177,28 @@ class SearchAdd extends Component {
 
 export default SearchAdd;
 
-
-const SearchAddStyle= StyleSheet.create({
-  btnAdd : {
+const SearchAddStyle = StyleSheet.create({
+  btnAdd: {
     alignItems: "center",
     width: 30,
     height: 30,
     borderRadius: 50,
     backgroundColor: "orange",
-    margin:0,
-    padding:0
+    margin: 0,
+    padding: 0
   },
-  inputSearchIngrid:{
-    padding: 12,
+  searchBlock: {},
+  inputSearchIngrid: {
+    marginTop: 30,
+    borderColor: "orange",
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5
+    borderStyle: "solid",
+    borderRadius: 30,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderColor: "orange"
   },
-  searchIteamAdd:{
+  searchIteamAdd: {
     padding: 10,
     marginTop: 2,
     backgroundColor: "#fff",
@@ -190,13 +206,13 @@ const SearchAddStyle= StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5
   },
-  selectedItem:{
+  selectedItem: {
     display: "flex",
     flexDirection: "row",
     alignContent: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
-  btnDeleteSelect:{
+  btnDeleteSelect: {
     backgroundColor: "orange",
     alignItems: "center",
     justifyContent: "center",
@@ -204,32 +220,28 @@ const SearchAddStyle= StyleSheet.create({
     height: 25,
     borderRadius: 100,
     marginLeft: 10,
-    marginTop:20
+    marginTop: 20
   },
-  inputGram:{
+  inputGram: {
     paddingLeft: 30,
     paddingRight: 4,
     width: 100,
     height: 30,
-    fontSize:17
+    fontSize: 17
   },
-  sectionSelectedItem:{
-    display:"flex",
-    alignSelf:"stretch",
-    justifyContent:"space-between"
+  sectionSelectedItem: {
+    display: "flex",
+    alignSelf: "stretch",
+    justifyContent: "space-between"
   },
-  sectionSelectedItemBorder:{
-  width:150,
-  flexDirection:"column",
-  alignItems:"center"
+  sectionSelectedItemBorder: {
+    width: 150,
+    flexDirection: "column",
+    alignItems: "center"
   },
-  selectedItemText:{
-    fontWeight:"bold",
-    textDecorationLine: 'underline',
-  marginBottom:4
+  selectedItemText: {
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+    marginBottom: 4
   }
-
-
-
-
-})
+});

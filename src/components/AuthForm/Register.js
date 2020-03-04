@@ -1,11 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import { styles } from "./AuthForm.styles";
 

@@ -40,7 +40,7 @@ export const AchivmentsPage = () => {
     ];
 
     const tableDataValues = await [
-      [`${Math.round(NdailyNorm)} ккал`],
+      [`${Math.round(dailyNorm)} ккал`],
       [`${Math.round(dailyConsumed)} ккал`],
       [`${Math.round(dailyBalance)} ккал`],
       [`${Math.round(percentage)} %`]

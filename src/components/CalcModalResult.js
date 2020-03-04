@@ -1,149 +1,96 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { Text, View, TouchableOpacity, Button, FlatList, ScrollView } from "react-native";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+  StyleSheet,
+  Button
+} from "react-native";
 import shortid from "shortid";
-
-const stylesModal = {
-  width: "100%",
-  height: '100%',
-  backgroundColor: "#fff",
-  position: "absolute",
-};
-
-const textStyle = {
-  fontSize: "30px",
-  fontWeight: "bolder",
-  marginTop: "15%",
-  padding: "6%",
-  textAlign: "left",
-  marginBottom: "8%"
-};
-
-const styleText = {
-  fontSize: "23px",
-  fontWeight: "bolder",
-  padding: "10%",
-  textAlign: "left"
-};
-
-const resCaloriesStyle = {
-  fontSize: "47px",
-  color: "color:rgb(40, 64, 96)",
-  fontWeight: "700",
-  letterSpacing: "5px",
-  textAlign: "center"
-};
-
-const caloriesText = {
-  fontSize: "30px",
-  color: "color:rgb(40, 64, 96)",
-  fontWeight: "700",
-  textAlign: "center",
-  letterSpacing: "0px"
-};
-
-const btnDesign = {
-  display: "block",
-  marginLeft: "15%",
-  marginTop: "-20%",
-  width: "70%",
-  height: 70,
-  borderRadius: 20,
-  borderWidth: 1,
-  backgroundColor: "#fc842c",
-  borderColor: "#fff"
-};
-
-const textDes = {
-  textAlign: "center",
-  padding: "8%",
-  color: "#fff",
-  fontSize: "18px",
-  marginBottom: '15%'
-};
+import { Ionicons } from "@expo/vector-icons";
 
 class CalcModalResult extends Component {
   state = { isVisible: true };
+
   handleClose = () => {
     this.setState(prevState => ({
       isVisible: !prevState.isVisible
     }));
   };
 
-  render() {
-    let counter=1;
-    return (
-      
-    <>  
-   
-        {this.state.isVisible && (
-             
-          <View style={stylesModal}>
+  pushAlertBeforeRegister = () => {
+    Alert.alert(
+      "Вы не вошли в аккаунт",
+      "Чтобы продолжить, нужно пройти регистрацию или войти",
+      [
+        {
+          text: "Отменить",
+          style: "cancel"
+        },
+        {
+          text: "Авторизироваться",
+          onPress: () => this.props.navigation.navigate("Регистрация")
+        }
+      ],
+      { cancelable: false }
+    );
+  };
 
-          
-            <Text style={textStyle}>
+  render() {
+    let counter = 1;
+    return (
+      <>
+        {this.state.isVisible && (
+          <View style={styles.wrap}>
+            <Text style={styles.title}>
               Ваша рекомендуемая суточная норма калорий составляет:
             </Text>
-            <Text style={resCaloriesStyle}>
-              {this.props.dailyRate} <Text style={caloriesText}>ккал</Text>
+            <Text style={styles.callories}>
+              {this.props.dailyRate} <Text style={styles.callories}>ккал</Text>
             </Text>
-            <View
-              style={{
-                width: "90%",
-                marginRight: "15%",
-                marginLeft: "3%",
-                marginTop: "10%",
-                marginBottom: "8%",
-                height: 1,
-                backgroundColor: "#000"
-              }}
-            />
-            <Text style={styleText}>
-              Продукты, которые вам не рекомендуется употреблять:</Text>
-          
-             
-              <FlatList
-              data={this.props.productsByBloodType}
-              renderItem={({item}) => (
-                <View>
-                  <Text>{counter++}</Text>
-                  <Text style={{ color: "rgb(153, 157, 170)", display: 'block', fontSize: '20px' }}>{item}</Text>
-                </View>
-                // <ListItem
-                //   leftElement={counter++}
-                //   title={item}
-                //   titleStyle={{ color: "rgb(153, 157, 170)", display: 'block', fontSize: '20px' }}
-                // />
-              )}
-              keyExtractor={()=>shortid()}
-              />
+            <Text style={styles.titleProducts}>
+              Продукты, которые вам не рекомендуется употреблять:
+            </Text>
 
+            <FlatList
+              data={this.props.productsByBloodType}
+              renderItem={({ item }) => (
+                <View>
+                  <Text></Text>
+                  <Text>
+                    {counter++}. {item}
+                  </Text>
+                </View>
+              )}
+              keyExtractor={() => shortid()}
+            />
 
             {!this.props.isAuth && (
+              <>
+                {/* <TouchableOpacity
+                  style={styles.buttonBack}
+                  onPress={this.handleClose}
+                >
+                  <Ionicons name="ios-arrow-back" size={30} color="orange" />
+                  <Text style={styles.buttonBackText}>Вернуться</Text>
+                </TouchableOpacity> */}
 
-
-              <TouchableOpacity
-                style={btnDesign}
-                onPress={() => {
-                  // this.props.("Войти");
-                  console.log(this.props.JumpTo.navigate('Войти'))
-                }}
-              >
-                <Text style={textDes}>Начать худеть</Text>
-              </TouchableOpacity>
-           
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    this.pushAlertBeforeRegister();
+                  }}
+                >
+                  <Text style={styles.textButton}>Начать худеть</Text>
+                </TouchableOpacity>
+              </>
             )}
-           
           </View>
-          
         )}
-      
-</>
-
-
-
+      </>
     );
   }
 }
@@ -152,3 +99,57 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(CalcModalResult);
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  title: {
+    fontFamily: "open-bold",
+    fontSize: 18,
+    textAlign: "center",
+    marginTop: 30,
+    marginBottom: 50,
+    color: "#444"
+  },
+  callories: {
+    fontFamily: "open-bold",
+    fontSize: 40,
+    color: "orange",
+    marginBottom: 50
+  },
+  titleProducts: {
+    fontFamily: "open-regular",
+    fontSize: 16,
+    textAlign: "center",
+    color: "#444",
+    marginBottom: 30
+  },
+  products: {
+    fontFamily: "open-regular"
+  },
+  button: {
+    backgroundColor: "orange",
+    paddingVertical: 10,
+    borderRadius: 30,
+    width: 200,
+    marginBottom: 100
+  },
+  textButton: {
+    textAlign: "center",
+    color: "white",
+    fontFamily: "open-bold"
+  },
+  buttonBack: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20
+  },
+  buttonBackText: {
+    marginLeft: 10,
+    color: "orange"
+  }
+});

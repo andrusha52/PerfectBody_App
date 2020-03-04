@@ -3,19 +3,16 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   StyleSheet
 } from "react-native";
-import {connect} from "react-redux"
+import { connect } from "react-redux";
 import axios from "axios";
 import { AppLoader } from "../components/ui/AppLoader";
 import SearchAdd from "../components/diary/SearchAdd";
 import CalendarAdd from "../components/diary/CalendarAdd";
 import { FlatGrid } from "react-native-super-grid";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-
-
 
 function yyyymmdd() {
   function twoDigit(n) {
@@ -32,24 +29,19 @@ function yyyymmdd() {
   );
 }
 
-
-
 class DiaryScreen extends Component {
   state = {
     data: yyyymmdd(),
     calendarIsOpen: false,
     dayIngredients: [],
     dataURL: Date.now(),
-    preLoader: false,
-
+    preLoader: false
   };
 
   componentDidMount() {
-
     if (this.state.dayIngredients.length === 0) {
       this.getDayIngredients();
     }
-
   }
 
   selectedDate = value => {
@@ -102,48 +94,58 @@ class DiaryScreen extends Component {
   render() {
     return (
       <View>
+        {this.state.preLoader && <AppLoader />}
+
+        <SearchAdd
+          getDayIngredients={this.getDayIngredients}
+          token={this.props.auth.token}
+        />
+
         <View style={styles.openCalendar}>
           <View style={styles.calendar}>
-          <Text>Сводка за:</Text>
-          <TouchableOpacity onPress={this.openCalendar}>
-            <Text style={styles.calendarData}>{this.state.data}  <MaterialCommunityIcons name="calendar" size={15} color="#fc842c" /></Text>
-          </TouchableOpacity>
+            <Text style={styles.calendarTitle}>Сводка за:</Text>
+            <TouchableOpacity onPress={this.openCalendar}>
+              <Text style={styles.calendarData}>
+                {this.state.data}
+                &nbsp;
+                <MaterialCommunityIcons
+                  name="calendar"
+                  size={15}
+                  color="orange"
+                />
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
 
-        {this.state.preLoader &&  <AppLoader /> }
-
-        <SearchAdd getDayIngredients={this.getDayIngredients} token={this.props.auth.token}/>
-
         <View style={styles.listWrap}>
-        <View style={styles.horizontLine}/>
-<ScrollView>
-            <View>
+          <View>
+            <ScrollView>
               {this.state.dayIngredients.length < 1 ? (
                 <Text>Здесь будет отображаться Ваш рацион!</Text>
               ) : (
                 <>
-                <View style={styles.ingridientLi}>
-                <Text style={styles.aboutTextProduct}>Продукт :</Text>
-                <Text style={styles.aboutText}>Калории :</Text>
-                <Text style={styles.aboutText}>Грамм :</Text>
-                <View style={{width:25}}/>
-                </View>
+                  <View style={styles.ingridientLiHeader}>
+                    <Text style={styles.aboutTextProduct}>Продукт :</Text>
+                    <Text style={styles.aboutText}>Калории :</Text>
+                    <Text style={styles.aboutText}>Граммы :</Text>
+                    <View style={{ width: 25 }} />
+                  </View>
                   <FlatGrid
                     itemDimension={200}
                     items={this.state.dayIngredients}
                     renderItem={({ item }) => (
                       <View style={styles.ingridientLi}>
-                        <View  style={styles.productConteiner}>
-                        <Text>{item.title.ru}</Text>
+                        <View style={styles.productConteiner}>
+                          <Text>{item.title.ru}</Text>
                         </View>
                         <View>
-                        <Text>{item.calories}</Text>
+                          <Text>{item.calories}</Text>
                         </View>
-                       <View  style={styles.gramConteiner}>
-                       <Text>{item.weight}</Text>
-                       </View>
-                      
+                        <View style={styles.gramConteiner}>
+                          <Text>{item.weight}</Text>
+                        </View>
+
                         <TouchableOpacity
                           id={item._id}
                           onPress={() =>
@@ -152,9 +154,13 @@ class DiaryScreen extends Component {
                             }, 0)
                           }
                           style={styles.btnDeleteIngridiend}
-                          keyExtractor={(item)=>item.id}
+                          keyExtractor={item => item.id}
                         >
-                            <MaterialCommunityIcons name="delete" size={15} color="white" />
+                          <MaterialCommunityIcons
+                            name="delete"
+                            size={15}
+                            color="white"
+                          />
                         </TouchableOpacity>
                       </View>
                     )}
@@ -162,9 +168,8 @@ class DiaryScreen extends Component {
                   />
                 </>
               )}
-             
-            </View>
             </ScrollView>
+          </View>
         </View>
 
         {this.state.calendarIsOpen ? (
@@ -174,22 +179,17 @@ class DiaryScreen extends Component {
     );
   }
 }
-const mapStateToProps = (state) => state
-
+const mapStateToProps = state => state;
 
 export default connect(mapStateToProps)(DiaryScreen);
 
-
-
-
 const styles = StyleSheet.create({
-
   openCalendar: {
     alignItems: "center",
-    padding: 10
+    paddingVertical: 20
   },
   listWrap: {
-    marginTop: 50
+    // marginTop: 50
   },
   item: {
     alignSelf: "stretch",
@@ -209,52 +209,68 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     marginLeft: 10
   },
-  calendar:{
-    display:"flex",
-    alignContent:"center",
-    flexDirection:"row",
-    width:200,
+  calendar: {
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    width: 200
   },
-  calendarData:{
-    paddingLeft:5,
-    fontWeight:"bold",
-    fontSize:15
+  calendarTitle: {
+    fontFamily: "open-regular",
+    fontSize: 18,
+    color: "#444"
   },
-  horizontLine:{
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+  calendarData: {
+    paddingLeft: 5,
+    fontFamily: "open-bold",
+    fontSize: 18,
+    color: "#444"
   },
-  btnDeleteIngridiend:{
+  horizontLine: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1
+  },
+  btnDeleteIngridiend: {
     backgroundColor: "orange",
     alignItems: "center",
     justifyContent: "center",
     width: 25,
     height: 25,
-    borderRadius: 100,
+    borderRadius: 100
   },
-  ingridientLi:{
-    marginVertical:10,
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"space-between",
-
+  ingridientLi: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "lightgrey"
   },
-  aboutText:{
-    fontWeight:"bold",
-    marginBottom:4
+  ingridientLiHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "lightgrey"
   },
-  aboutTextProduct:{
-    paddingLeft:10,
-    fontWeight:"bold",
-    marginBottom:4,
-    width:120
+  aboutText: {
+    fontFamily: "open-bold"
   },
-  productConteiner:{
-    width: 120,
+  aboutTextProduct: {
+    paddingLeft: 10,
+    fontFamily: "open-bold",
+    width: 120
   },
-  gramConteiner:{
-    width:30,
-    alignContent:"center",
-    marginLeft:20
+  productConteiner: {
+    width: 120
+  },
+  gramConteiner: {
+    width: 30,
+    alignContent: "center",
+    marginLeft: 20
   }
 });
