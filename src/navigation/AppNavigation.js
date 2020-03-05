@@ -17,6 +17,7 @@ import CalcModalResult from "../components/CalcModalResult";
 // options
 import { screenOptions } from "./options/screenOptions";
 import { authScreenOptions } from "./options/authScreenOptions";
+import CulcScreen from "../components/CulcScreen";
 
 const StackDiary = createStackNavigator();
 function diaryStackScreen() {
@@ -37,7 +38,7 @@ function calcStackScreen() {
     <StackCalc.Navigator>
       <StackCalc.Screen
         name="CalcScreen"
-        component={InitialInfo}
+        component={CulcScreen}
         options={screenOptions("Калькулятор")}
       />
     </StackCalc.Navigator>

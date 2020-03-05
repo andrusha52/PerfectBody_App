@@ -29,9 +29,9 @@ class InitialInfo extends Component {
     isModalVisible: false
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     this.setState(prevState => ({
-      isModalVisible: !prevState.isModalVisible
+      // isModalVisible: !prevState.isModalVisible
     }));
 
     const calculated =
@@ -42,7 +42,7 @@ class InitialInfo extends Component {
         10 * (this.state.currentWeight - this.state.desiredWeight));
 
     if (Number(this.state.groupBlood) === 1) {
-      this.setState({
+      await this.setState({
         productsByBloodType: [
           "Овсяная, пшенная, кукурузная каши",
           "Рожь и чечевица",
@@ -51,7 +51,7 @@ class InitialInfo extends Component {
         ]
       });
     } else if (this.state.groupBlood === 2) {
-      this.setState({
+      await this.setState({
         productsByBloodType: [
           "Все виды мяса",
           "Капуста",
@@ -59,7 +59,7 @@ class InitialInfo extends Component {
         ]
       });
     } else if (this.state.groupBlood === 3) {
-      this.setState({
+      await this.setState({
         productsByBloodType: [
           "Крупы (особенно пшеница, гречка)",
           "Орехи (стоит избегать арахиса)",
@@ -68,7 +68,7 @@ class InitialInfo extends Component {
         ]
       });
     } else if (this.state.groupBlood === 4) {
-      this.setState({
+      await this.setState({
         productsByBloodType: [
           "Некоторые крупы (гречка, кукуруза)",
           "Фасоль",
@@ -77,12 +77,12 @@ class InitialInfo extends Component {
       });
     }
 
-    this.setState({
+    await this.setState({
       dailyRate: calculated
     });
 
-    this.props.userData(this.state);
-    // this.props.navigation.navigate("Результат");
+    await this.props.userData(this.state);
+    await this.props.navigation.navigate("Результат");
   };
 
   handleChange = (name, value) => {

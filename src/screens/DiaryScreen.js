@@ -44,13 +44,13 @@ class DiaryScreen extends Component {
     }
   }
 
-  selectedDate = value => {
-    this.setState({
+  selectedDate = async value => {
+    await this.setState({
       data: value.dateString,
       dataURL: value.timestamp,
       calendarIsOpen: false
     });
-    this.getDayIngredients();
+    await this.getDayIngredients();
   };
 
   openCalendar = () => {
@@ -120,7 +120,7 @@ class DiaryScreen extends Component {
 
         <View style={styles.listWrap}>
           <View>
-            <ScrollView>
+            <ScrollView style={{ marginBottom: 305 }}>
               {this.state.dayIngredients.length < 1 ? (
                 <Text>Здесь будет отображаться Ваш рацион!</Text>
               ) : (

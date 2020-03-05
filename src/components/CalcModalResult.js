@@ -49,14 +49,15 @@ class CalcModalResult extends Component {
               Ваша рекомендуемая суточная норма калорий составляет:
             </Text>
             <Text style={styles.callories}>
-              {this.props.dailyRate} <Text style={styles.callories}>ккал</Text>
+              {this.props.userData.dailyRate}{" "}
+              <Text style={styles.callories}>ккал</Text>
             </Text>
             <Text style={styles.titleProducts}>
               Продукты, которые вам не рекомендуется употреблять:
             </Text>
 
             <FlatList
-              data={this.props.productsByBloodType}
+              data={this.props.userData.productsByBloodType}
               renderItem={({ item }) => (
                 <View>
                   <Text></Text>
@@ -95,7 +96,8 @@ class CalcModalResult extends Component {
   }
 }
 const mapStateToProps = state => ({
-  isAuth: state.auth.isAuthenticated
+  isAuth: state.auth.isAuthenticated,
+  userData: state.auth.user.userData
 });
 
 export default connect(mapStateToProps)(CalcModalResult);
