@@ -58,53 +58,13 @@ class CulcScreen extends Component {
   };
 
   handleSubmit = () => {
-    this.setState(prevState => ({
-      isModalVisible: !prevState.isModalVisible
-    }));
-
-    if (this.state.groupBlood === 1) {
-      this.setState({
-        productsByBloodType: [
-          "Овсяная, пшенная, кукурузная каши",
-          "Рожь и чечевица",
-          "Бобы",
-          "Жирные молочные продукты",
-          "Все виды капусты и яблоки"
-        ]
-      });
-    } else if (this.state.groupBlood === 2) {
-      this.setState({
-        productsByBloodType: [
-          "Все виды мяса",
-          "Капуста",
-          "Жирные молочные продукты"
-        ]
-      });
-    } else if (this.state.groupBlood === 3) {
-      this.setState({
-        productsByBloodType: [
-          "Крупы (особенно пшеница, гречка)",
-          "Орехи (стоит избегать арахиса)",
-          "Выпечка",
-          "Некоторые виды мяса (говядина, индейка)"
-        ]
-      });
-    } else if (this.state.groupBlood === 4) {
-      this.setState({
-        productsByBloodType: [
-          "Некоторые крупы (гречка, кукуруза)",
-          "Фасоль",
-          "Кунжут"
-        ]
-      });
-    }
-
-    this.props.userData(this.state);
+    this.props.navigation.navigate("DiaryScreen");
   };
 
   handleChange = (name, value) => {
     this.setState({ [name]: Number(value) });
   };
+
   render() {
     const {
       height,
@@ -119,9 +79,7 @@ class CulcScreen extends Component {
     return (
       <>
         <ScrollView style={styles.warp}>
-          <Text style={styles.title}>
-            Узнай свою суточную норму калорий прямо сейчас
-          </Text>
+          <Text style={styles.title}>Измени свою суточную норму калорий</Text>
           <View style={styles.inputBlock}>
             <TextInput
               keyboardType="number-pad"

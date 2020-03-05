@@ -41,6 +41,12 @@ function calcStackScreen() {
         component={CulcScreen}
         options={screenOptions("Калькулятор")}
       />
+
+      <StackCalc.Screen
+        name="DiaryScreen"
+        component={DiaryScreen}
+        options={screenOptions("Дневник")}
+      />
     </StackCalc.Navigator>
   );
 }

@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
   },
   buttonBlock: {
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginBottom: 100
   }
 });
