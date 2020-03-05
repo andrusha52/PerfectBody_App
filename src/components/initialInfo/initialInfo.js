@@ -11,7 +11,6 @@ import {
   Alert
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import CalcModalResult from "../CalcModalResult";
 import { userData } from "../../redux/act";
 import { styles } from "./initialInfo.styles";
 import { Ionicons } from "@expo/vector-icons";
@@ -24,7 +23,8 @@ const initialState = {
   groupBlood: "",
   dailyRate: "",
   productsByBloodType: [],
-  errorInForm: false
+  errorInForm: false,
+  token: ""
 };
 
 class InitialInfo extends Component {
@@ -41,6 +41,7 @@ class InitialInfo extends Component {
   componentDidMount = () => {
     this.handleAnimation();
   };
+
   handleAnimation = () => {
     Animated.timing(this.animatedValue, {
       toValue: 1,
@@ -150,45 +151,7 @@ class InitialInfo extends Component {
               }
             ],
             { cancelable: false }
-          )
-
-        // <Animated.View
-        //   style={{
-        //     position: "absolute",
-        //     right: 0,
-        //     top: 10,
-        //     height: 50,
-        //     backgroundColor: "salmon",
-        //     width: 300,
-        //     transform: [
-        //       {
-        //         scaleX: this.animatedValue.interpolate({
-        //           inputRange: [0, 0.5, 1],
-        //           outputRange: [0, 1, 1]
-        //         })
-        //       },
-        //       {
-        //         scaleY: this.animatedValue.interpolate({
-        //           inputRange: [0, 0.5, 1],
-        //           outputRange: [0, 1, 1]
-        //         })
-        //       }
-        //     ]
-        //   }}
-        // >
-        //   <Text
-        //     style={{
-        //       color: "#fff",
-        //       fontSize: 16,
-        //       textAlign: "center",
-        //       fontFamily: "open-bold",
-        //       padding: 10
-        //     }}
-        //   >
-        //     Введите корректные данные
-        //   </Text>
-        // </Animated.View>
-        }
+          )}
 
         <ScrollView style={styles.warp}>
           <Text style={styles.title}>
@@ -205,7 +168,7 @@ class InitialInfo extends Component {
               style={styles.input}
               label={"Height *"}
               onChangeText={text => this.handleChange("height", text)}
-              value={height}
+              value={height.toString()}
             />
             <TextInput
               placeholder="Возраст (лет) *"
@@ -217,7 +180,7 @@ class InitialInfo extends Component {
               style={styles.input}
               label={"Age *"}
               onChangeText={text => this.handleChange("age", text)}
-              value={age}
+              value={age.toString()}
             />
             <TextInput
               placeholder="Текущий вес (кг) *"
@@ -229,7 +192,7 @@ class InitialInfo extends Component {
               style={styles.input}
               label={"Current Weight *"}
               onChangeText={text => this.handleChange("currentWeight", text)}
-              value={currentWeight}
+              value={currentWeight.toString()}
             />
             <TextInput
               placeholder="Желаемый вес (кг) *"
@@ -241,7 +204,7 @@ class InitialInfo extends Component {
               style={styles.input}
               label={"Target Weight *"}
               onChangeText={text => this.handleChange("desiredWeight", text)}
-              value={desiredWeight}
+              value={desiredWeight.toString()}
             />
 
             <View style={styles.selectorBlock}>
@@ -251,7 +214,7 @@ class InitialInfo extends Component {
                   value: null,
                   color: "grey"
                 }}
-                value={groupBlood}
+                value={groupBlood.toString()}
                 onValueChange={text => this.handleChange("groupBlood", text)}
                 style={styles.selector}
                 Icon={() => {

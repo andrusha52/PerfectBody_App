@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { AsyncStorage } from "react-native";
 
 const isAuthenticated = (state = false, action) => {
   switch (action.type) {
@@ -36,6 +37,7 @@ const token = (state = null, action) => {
       return action.payload.token;
     case "LOGOUT_SUCCESS":
       return null;
+
     default:
       return state;
   }
