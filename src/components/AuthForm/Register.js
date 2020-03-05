@@ -5,7 +5,9 @@ import { styles } from "./AuthForm.styles";
 
 const initialState = {
   nickname: "",
-  password: ""
+  password: "",
+  loginError: "",
+  passwordError: ""
 };
 
 class Register extends Component {
@@ -25,9 +27,32 @@ class Register extends Component {
 
   handleChange = (name, value) => {
     this.setState({ [name]: value });
+    setTimeout(() => {
+      if (this.state.nickname.length > 0 && this.state.nickname.length < 5) {
+        this.setState({ loginError: "Nickname must be at least 5 characters" });
+      } else if (this.state.nickname.length > 20) {
+        this.setState({
+          loginError: "Nickname must not contain more than 20 characters!"
+        });
+      } else if (
+        this.state.password.length > 0 &&
+        this.state.password.length < 6
+      ) {
+        this.setState({
+          passwordError: "Password must be at least 6 characters!"
+        });
+      } else if (this.state.password.length > 20) {
+        this.setState({
+          passwordError: "Password must not contain more than 20 characters!"
+        });
+      } else {
+        this.setState({ loginError: "", passwordError: "" });
+      }
+    }, 200);
   };
+
   render() {
-    const { nickname, password } = this.state;
+    const { nickname, password, passwordError, loginError } = this.state;
 
     return (
       <View style={styles.wrap}>
@@ -41,6 +66,9 @@ class Register extends Component {
           onChangeText={text => this.handleChange("nickname", text)}
           value={nickname}
         />
+
+        <Text style={{ fontSize: 12, color: "salmon" }}>{loginError}</Text>
+
         <TextInput
           id="password"
           minLength={6}
@@ -52,6 +80,9 @@ class Register extends Component {
           onChangeText={text => this.handleChange("password", text)}
           value={password}
         />
+
+        <Text style={{ fontSize: 12, color: "salmon" }}>{passwordError}</Text>
+
         <TouchableOpacity onPress={this.handleSubmit} style={styles.button}>
           <Text style={styles.buttonText}>{this.props.formName}</Text>
         </TouchableOpacity>

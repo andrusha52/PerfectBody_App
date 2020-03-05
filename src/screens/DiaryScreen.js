@@ -275,8 +275,8 @@ const styles = StyleSheet.create({
     width: 120
   },
   gramConteiner: {
-    width: 30,
+    width: 40,
     alignContent: "center",
-    marginLeft: 20
+    marginLeft: 40
   }
 });
