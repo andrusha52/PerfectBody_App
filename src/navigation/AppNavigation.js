@@ -52,7 +52,7 @@ function authCalcStackScreen() {
       <AuthStackCalc.Screen
         name="CalcScreen"
         component={InitialInfo}
-        options={authScreenOptions("Калькулятор")}
+        options={authScreenOptions("Perfect Body")}
       />
 
       <AuthStackCalc.Screen

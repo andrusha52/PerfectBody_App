@@ -48,9 +48,21 @@ const error = (state = null, action) => {
   }
 };
 
+const reload = (state = false, action) => {
+  switch (action.type) {
+    case "RELOAD_PAGE":
+      return (state = true);
+    case "STOPLOAD_PAGE":
+      return (state = false);
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   isAuthenticated,
   user,
   token,
-  error
+  error,
+  reload
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { View, ScrollView } from "react-native";
 import {
   userDailyNormaInfo,
@@ -17,10 +17,12 @@ export const AchivmentsPage = () => {
   const [isLoad, setIsLoad] = useState(true);
 
   const token = useSelector(state => state.auth.token);
+  const reload = useSelector(state => state.auth.reload);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getStateValues();
-  }, []);
+  }, [reload]);
 
   const getStateValues = async () => {
     const dailyNorm = await userDailyNormaInfo(token);
@@ -63,6 +65,7 @@ export const AchivmentsPage = () => {
     setTableData(tableDataValues);
     setHistory(historyForChart);
     setIsLoad(false);
+    dispatch({ type: "STOPLOAD_PAGE" });
   };
 
   const putValuesToChart = (x, y) =>
@@ -71,6 +74,7 @@ export const AchivmentsPage = () => {
       y: Number(y[idx])
     }));
 
+  console.log("RE_RE_RE_RE_RENDER");
   return (
     <ScrollView>
       {isLoad ? (

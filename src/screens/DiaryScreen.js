@@ -80,6 +80,8 @@ class DiaryScreen extends Component {
         })
       )
       .finally(() => this.setState({ preLoader: false }));
+
+    await this.props.reload({ type: "RELOAD_PAGE" });
   };
 
   onRemoveItem = async id => {
@@ -181,7 +183,11 @@ class DiaryScreen extends Component {
 }
 const mapStateToProps = state => state;
 
-export default connect(mapStateToProps)(DiaryScreen);
+const mDTP = dispatch => ({
+  reload: () => dispatch({ type: "RELOAD_PAGE" })
+});
+
+export default connect(mapStateToProps, mDTP)(DiaryScreen);
 
 const styles = StyleSheet.create({
   openCalendar: {

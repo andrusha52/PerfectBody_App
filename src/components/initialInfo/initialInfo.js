@@ -109,102 +109,98 @@ class InitialInfo extends Component {
             productsByBloodType={productsByBloodType}
           />
         ) : (
-          <View style={styles.warp}>
-            <ScrollView>
-              <Text style={styles.title}>
-                Узнай свою суточную норму калорий прямо сейчас
-              </Text>
-              <View style={styles.inputBlock}>
-                <TextInput
-                  keyboardType="number-pad"
-                  placeholder="Рост *"
-                  minLength={1}
-                  maxLength={3}
-                  id="height"
-                  style={styles.input}
-                  label={"Height *"}
-                  onChangeText={text => this.handleChange("height", text)}
-                  value={height}
-                />
-                <TextInput
-                  placeholder="Возраст *"
-                  keyboardType="number-pad"
-                  minLength={2}
-                  maxLength={2}
-                  id="age"
-                  style={styles.input}
-                  label={"Age *"}
-                  onChangeText={text => this.handleChange("age", text)}
-                  value={age}
-                />
-                <TextInput
-                  placeholder="Текущий вес *"
-                  keyboardType="number-pad"
-                  minLength={2}
-                  maxLength={3}
-                  id="currentWeight"
-                  style={styles.input}
-                  label={"Current Weight *"}
-                  onChangeText={text =>
-                    this.handleChange("currentWeight", text)
-                  }
-                  value={currentWeight}
-                />
-                <TextInput
-                  placeholder="Желаемый вес *"
-                  keyboardType="number-pad"
-                  minLength={2}
-                  maxLength={3}
-                  id="desiredWeight"
-                  style={styles.input}
-                  label={"Target Weight *"}
-                  onChangeText={text =>
-                    this.handleChange("desiredWeight", text)
-                  }
-                  value={desiredWeight}
-                />
+          <ScrollView style={styles.warp}>
+            <Text style={styles.title}>
+              Узнай свою суточную норму калорий прямо сейчас
+            </Text>
+            <View style={styles.inputBlock}>
+              <TextInput
+                keyboardType="number-pad"
+                placeholder="Рост (см) *"
+                minLength={1}
+                maxLength={3}
+                returnKeyType="done"
+                id="height"
+                style={styles.input}
+                label={"Height *"}
+                onChangeText={text => this.handleChange("height", text)}
+                value={height}
+              />
+              <TextInput
+                placeholder="Возраст (лет) *"
+                keyboardType="number-pad"
+                minLength={2}
+                maxLength={2}
+                returnKeyType="done"
+                id="age"
+                style={styles.input}
+                label={"Age *"}
+                onChangeText={text => this.handleChange("age", text)}
+                value={age}
+              />
+              <TextInput
+                placeholder="Текущий вес (кг) *"
+                keyboardType="number-pad"
+                minLength={2}
+                maxLength={3}
+                returnKeyType="done"
+                id="currentWeight"
+                style={styles.input}
+                label={"Current Weight *"}
+                onChangeText={text => this.handleChange("currentWeight", text)}
+                value={currentWeight}
+              />
+              <TextInput
+                placeholder="Желаемый вес (кг) *"
+                keyboardType="number-pad"
+                minLength={2}
+                maxLength={3}
+                returnKeyType="done"
+                id="desiredWeight"
+                style={styles.input}
+                label={"Target Weight *"}
+                onChangeText={text => this.handleChange("desiredWeight", text)}
+                value={desiredWeight}
+              />
 
-                <View style={styles.selectorBlock}>
-                  <RNPickerSelect
-                    placeholder={{
-                      label: "Группа крови *",
-                      value: null,
-                      color: "grey"
-                    }}
-                    value={groupBlood}
-                    onValueChange={text =>
-                      this.handleChange("groupBlood", text)
-                    }
-                    style={styles.selector}
-                    Icon={() => {
-                      return (
-                        <Ionicons
-                          name="ios-arrow-dropdown"
-                          size={19}
-                          color="orange"
-                        />
-                      );
-                    }}
-                    items={[
-                      { label: "1", value: 1 },
-                      { label: "2", value: 2 },
-                      { label: "3", value: 3 },
-                      { label: "4", value: 4 }
-                    ]}
-                  />
-                </View>
+              <View style={styles.selectorBlock}>
+                <RNPickerSelect
+                  placeholder={{
+                    label: "Группа крови *",
+                    value: null,
+                    color: "grey"
+                  }}
+                  value={groupBlood}
+                  onValueChange={text => this.handleChange("groupBlood", text)}
+                  style={styles.selector}
+                  Icon={() => {
+                    return (
+                      <Ionicons
+                        name="ios-arrow-dropdown"
+                        size={19}
+                        color="orange"
+                      />
+                    );
+                  }}
+                  items={[
+                    { label: "1", value: 1 },
+                    { label: "2", value: 2 },
+                    { label: "3", value: 3 },
+                    { label: "4", value: 4 }
+                  ]}
+                />
               </View>
+            </View>
 
-              <View style={styles.buttonBlock}>
-                <TouchableOpacity
-                  onPress={this.handleSubmit}
-                  style={styles.button}
-                >
-                  <Text style={styles.buttonText}>Похудеть</Text>
-                </TouchableOpacity>
-              </View>
-            </ScrollView>
-          </View>
+            <View style={styles.buttonBlock}>
+              <TouchableOpacity
+                onPress={this.handleSubmit}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Похудеть</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
         )}
       </>
     );
