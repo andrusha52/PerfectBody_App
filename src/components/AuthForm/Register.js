@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, TouchableOpacity,Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { connect } from "react-redux";
 import { styles } from "./AuthForm.styles";
 
@@ -46,32 +46,37 @@ class Register extends Component {
         this.setState({
           passwordError: "Password must not contain more than 20 characters!"
         });
-      } else { 
+      } else {
         this.setState({ loginError: "", passwordError: "" });
       }
     }, 0);
   };
 
   render() {
+    this.props.auth.error.logError &&
+      setTimeout(() => {
+        this.props.clearError();
+      }, 1500);
+    this.props.auth.error.regError &&
+      setTimeout(() => {
+        this.props.clearError();
+      }, 1500);
+
     const { nickname, password, passwordError, loginError } = this.state;
     return (
-
-       
       <View style={styles.wrap}>
-         {this.props.auth.error.logError&& (
-           this.state.openERROR &&
-           Alert.alert(
-            'ERROR',
-            'Проверьте логин и пароль или такой аккаунт не найден',
-              [{text: 'Ok', onPress: () =>  { this.props.clearError();this.setState({openERROR:false});setTimeout(()=>{this.setState({openERROR:true})},1000)}}]))
-         }
-          {this.props.auth.error.regError&& (
-                       this.state.openERROR &&
-           Alert.alert(
-            'ERROR',
-            'Введите корректные данные или такой аккаунт уже зарегистрирован',
-              [{text: 'Ok', onPress: () =>   { this.props.clearError();this.setState({openERROR:false});setTimeout(()=>{this.setState({openERROR:true})},1000)}}]))
-         }
+        {this.props.auth.error.logError && (
+          <Text style={{ color: "red", fontSize: 20 }}>
+            Проверьте логин и пароль или такой аккаунт не найден
+          </Text>
+        )}
+
+        {this.props.auth.error.regError && (
+          <Text style={{ color: "red", fontSize: 20 }}>
+            Проверьте логин и пароль или такой аккаунт уже существует
+          </Text>
+        )}
+
         <TextInput
           id="nickname"
           minLength={3}
@@ -108,10 +113,11 @@ class Register extends Component {
 }
 const mapStateToProps = state => state;
 
+const mapDispatchToProps = dispatch => ({
+  clearError: () => dispatch({ type: "CLEARE_ERROR" })
+});
 
-const mapDispatchToProps = dispatch=>({
-  clearError: ()=>dispatch({type:"CLEARE_ERROR"})
-})
-  
-
-export default connect(mapStateToProps,mapDispatchToProps)(Register);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);
