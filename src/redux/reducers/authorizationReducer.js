@@ -43,8 +43,14 @@ const token = (state = null, action) => {
   }
 };
 
-const error = (state = null, action) => {
+const error = (state = {logError:false,regError:false}, action) => {
   switch (action.type) {
+    case "ERROR_LOGIN":
+      return {...state, logError:true};
+      case "ERROR_REG":
+    return {...state, regError:true};
+    case "CLEARE_ERROR":
+      return {logError:false, regError:false}
     default:
       return state;
   }

@@ -44,6 +44,7 @@ export const styles = StyleSheet.create({
   },
   selectorBlock: {
     marginTop: 10,
+    fontSize: 16,
     alignItems: "center",
     justifyContent: "center",
     width: "80%",

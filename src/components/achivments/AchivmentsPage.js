@@ -73,8 +73,6 @@ export const AchivmentsPage = () => {
       x: value,
       y: Number(y[idx])
     }));
-
-  console.log("RE_RE_RE_RE_RENDER");
   return (
     <ScrollView>
       {isLoad ? (

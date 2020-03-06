@@ -125,8 +125,11 @@ class InitialInfo extends Component {
   };
 
   handleChange = (name, value) => {
-    this.setState({ [name]: Number(value) });
+    this.setState({ [name]:value===""?"": Number(value) });
   };
+  handleChangeSelect=(value)=>{
+    this.setState({groupBlood:value})
+  }
 
   render() {
     const {
@@ -164,6 +167,7 @@ class InitialInfo extends Component {
               minLength={1}
               maxLength={3}
               returnKeyType="done"
+
               id="height"
               style={styles.input}
               label={"Height *"}
@@ -214,8 +218,8 @@ class InitialInfo extends Component {
                   value: null,
                   color: "grey"
                 }}
-                value={groupBlood.toString()}
-                onValueChange={text => this.handleChange("groupBlood", text)}
+                selectedValue={groupBlood}
+                onValueChange={(value) =>{ this.handleChangeSelect(value)}}
                 style={styles.selector}
                 Icon={() => {
                   return (

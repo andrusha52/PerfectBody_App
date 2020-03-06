@@ -62,8 +62,11 @@ class CulcScreen extends Component {
   };
 
   handleChange = (name, value) => {
-    this.setState({ [name]: Number(value) });
+    this.setState({ [name]: value===""? "" : Number(value) });
   };
+  handleChangeSelect=(value)=>{
+    this.setState({groupBlood:value})
+  }
 
   render() {
     const {
@@ -137,8 +140,8 @@ class CulcScreen extends Component {
                   value: null,
                   color: "grey"
                 }}
-                value={groupBlood.toString()}
-                onValueChange={text => this.handleChange("groupBlood", text)}
+                value={groupBlood}
+                onValueChange={(value) =>{ this.handleChangeSelect(value)}}
                 style={styles.selector}
                 Icon={() => {
                   return (
