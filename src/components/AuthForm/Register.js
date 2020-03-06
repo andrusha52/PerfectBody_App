@@ -56,23 +56,23 @@ class Register extends Component {
     this.props.auth.error.logError &&
       setTimeout(() => {
         this.props.clearError();
-      }, 1500);
+      }, 3500);
     this.props.auth.error.regError &&
       setTimeout(() => {
         this.props.clearError();
-      }, 1500);
+      }, 3500);
 
     const { nickname, password, passwordError, loginError } = this.state;
     return (
       <View style={styles.wrap}>
         {this.props.auth.error.logError && (
-          <Text style={{ color: "red", fontSize: 20 }}>
+          <Text style={{ color: "salmon", fontSize: 18, fontWeight:'bold', textAlign: 'center', padding: 10 }}>
             Проверьте логин и пароль или такой аккаунт не найден
           </Text>
         )}
 
         {this.props.auth.error.regError && (
-          <Text style={{ color: "red", fontSize: 20 }}>
+          <Text style={{ color: "salmon", fontSize: 20, fontWeight:'bold', fontWeight:'bold', textAlign: 'center', padding: 10  }}>
             Проверьте логин и пароль или такой аккаунт уже существует
           </Text>
         )}
