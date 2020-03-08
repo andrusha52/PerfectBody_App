@@ -57,18 +57,95 @@ class CulcScreen extends Component {
     }
   };
 
-  handleSubmit = () => {
-    this.props.navigation.navigate("DiaryScreen");
-  };
+  handleSubmit = async () => {
+    if (Number(this.state.height) > 50 && Number(this.state.height) < 230) {
+      if (Number(this.state.age) > 18 && Number(this.state.age) < 99) {
+        if (
+          Number(this.state.currentWeight) > 30 &&
+          Number(this.state.currentWeight) < 300
+        ) {
+          if (
+            Number(this.state.desiredWeight) > 30 &&
+            Number(this.state.desiredWeight) < 300
+          ) {
+            this.setState(prevState => ({
+              // isModalVisible: !prevState.isModalVisible
+            }));
+            const calculated = await (10 * this.state.currentWeight + 6,
+            25 * this.state.height -
+              5 * this.state.age -
+              161 -
+              10 * (this.state.currentWeight - this.state.desiredWeight));
+            if (Number(this.state.groupBlood) === 1) {
+              await this.setState({
+                productsByBloodType: [
+                  "Овсяная, пшенная, кукурузная каши",
+                  "Рожь и чечевица",
+                  "Жирные молочные продукты",
+                  "Все виды капусты и яблоки"
+                ]
+              });
+            } else if (this.state.groupBlood === 2) {
+              await this.setState({
+                productsByBloodType: [
+                  "Все виды мяса",
+                  "Капуста",
+                  "Жирные молочные продукты"
+                ]
+              });
+            } else if (this.state.groupBlood === 3) {
+              await this.setState({
+                productsByBloodType: [
+                  "Крупы (особенно пшеница, гречка)",
+                  "Орехи (стоит избегать арахиса)",
+                  "Выпечка",
+                  "Некоторые виды мяса (говядина, индейка)"
+                ]
+              });
+            } else if (this.state.groupBlood === 4) {
+              await this.setState({
+                productsByBloodType: [
+                  "Некоторые крупы (гречка, кукуруза)",
+                  "Фасоль",
+                  "Кунжут"
+                ]
+              });
+            }
+            await this.setState({
+              dailyRate: calculated
+            });
+            axios.put(`https://slim-moms.goit.co.ua/api/v1/user`,{...this.state},{
+              headers: {
+                Authorization: this.props.token,
+                "Content-Type": "application/json"
+              }
+            }).then(data=> console.log(data))
+            this.props.navigation.navigate("DiaryScreen");
+          }
+        }
+      }
+    } else {
+      this.setState({
+        errorInForm: true
+      });
+      setTimeout(() => {
+        this.setState({
+          errorInForm: false
+        });
+      }, 2000);
+    }
+   
+  }
 
   handleChange = (name, value) => {
     this.setState({ [name]: value===""? "" : Number(value) });
-  };
+  }
   handleChangeSelect=(value)=>{
     this.setState({groupBlood:value})
   }
 
   render() {
+
     const {
       height,
       age,
@@ -77,7 +154,7 @@ class CulcScreen extends Component {
       groupBlood,
       isModalVisible,
       productsByBloodType
-    } = this.state;
+    } = this.state
 
     return (
       <>

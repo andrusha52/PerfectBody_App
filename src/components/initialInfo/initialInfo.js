@@ -216,11 +216,15 @@ class InitialInfo extends Component {
                 placeholder={{
                   label: "Группа крови *",
                   value: null,
-                  color: "grey"
+                  color: "#bebebe"
                 }}
                 selectedValue={groupBlood}
                 onValueChange={(value) =>{ this.handleChangeSelect(value)}}
-                style={styles.selector}
+                style={{
+                  placeholder: {
+                    color: '#bebebe',
+                  },
+                }}
                 Icon={() => {
                   return (
                     <Ionicons
