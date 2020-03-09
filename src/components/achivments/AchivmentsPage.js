@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { View, ScrollView } from "react-native";
+import { ScrollView, RefreshControl } from "react-native";
 import {
   userDailyNormaInfo,
   getCalloriesByCurrentDay,
@@ -15,6 +15,7 @@ export const AchivmentsPage = () => {
   const [tableData, setTableData] = useState([]);
   const [history, setHistory] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
+  const [refresh, setRefresh] = useState(false);
 
   const token = useSelector(state => state.auth.token);
   const reload = useSelector(state => state.auth.reload);
@@ -65,6 +66,7 @@ export const AchivmentsPage = () => {
     setTableData(tableDataValues);
     setHistory(historyForChart);
     setIsLoad(false);
+
     dispatch({ type: "STOPLOAD_PAGE" });
   };
 
@@ -73,15 +75,29 @@ export const AchivmentsPage = () => {
       x: value,
       y: Number(y[idx])
     }));
+
+  const refreshTable = async () => {
+    await setRefresh(true);
+    await getStateValues();
+    await setRefresh(false);
+  };
+
   return (
-    <ScrollView>
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          colors={["#1e90ff"]}
+          refreshing={refresh}
+          onRefresh={refreshTable}
+        />
+      }
+    >
       {isLoad ? (
         <AppLoader />
       ) : (
         <Statistics tableTitle={tableTitle} tableData={tableData} />
       )}
       <Chart history={history} />
-      <View></View>
     </ScrollView>
   );
 };

@@ -32,7 +32,7 @@ class CalcModalResult extends Component {
         },
         {
           text: "Авторизироваться",
-          onPress: () => this.props.navigation.navigate("Регистрация")
+          onPress: () => this.props.navigation.navigate("Авторизация")
         }
       ],
       { cancelable: false }
@@ -81,9 +81,7 @@ class CalcModalResult extends Component {
 
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => {
-                    this.pushAlertBeforeRegister();
-                  }}
+                  onPress={() => this.props.navigation.navigate("Авторизация")}
                 >
                   <Text style={styles.textButton}>Начать худеть</Text>
                 </TouchableOpacity>

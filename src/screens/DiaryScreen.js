@@ -4,14 +4,19 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Alert,
+  TouchableHighlight,
+  RefreshControl,
+  StatusBar
 } from "react-native";
 import { connect } from "react-redux";
 import axios from "axios";
+import Swipeable from "react-native-swipeable";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { AppLoader } from "../components/ui/AppLoader";
 import SearchAdd from "../components/diary/SearchAdd";
 import CalendarAdd from "../components/diary/CalendarAdd";
-import { FlatGrid } from "react-native-super-grid";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function yyyymmdd() {
@@ -35,7 +40,9 @@ class DiaryScreen extends Component {
     calendarIsOpen: false,
     dayIngredients: [],
     dataURL: Date.now(),
-    preLoader: false
+    preLoader: false,
+    currentlyOpenSwipeable: null,
+    refresh: false
   };
 
   componentDidMount() {
@@ -90,12 +97,70 @@ class DiaryScreen extends Component {
         Authorization: this.props.auth.token
       }
     });
+
     await this.getDayIngredients();
   };
 
+  removeAlert = id => {
+    Alert.alert(
+      "Подвердите удаление",
+      "Вы уверены, что хотите удалить элемент из списка?",
+      [
+        {
+          text: "Отменить"
+        },
+        {
+          text: "Удалить",
+          style: "destructive",
+          onPress: () => this.onRemoveItem(id)
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+  refreshTable=async()=>{
+   await this.setState({refresh:true});
+   await   this.getDayIngredients();
+   await this.setState({refresh:false})
+
+  }
+
   render() {
+    const { currentlyOpenSwipeable } = this.state;
+
+    const rightButtons = id => [
+      <TouchableHighlight
+        onPress={() => this.removeAlert(id)}
+        style={[
+          styles.rightSwipeItem,
+          {
+            backgroundColor: "red",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "flex-start",
+            paddingLeft: 10,
+            marginLeft: 10
+          }
+        ]}
+      >
+        <Text
+          style={{
+            color: "white",
+            fontFamily: "open-regular",
+            marginHorizontal: 10
+          }}
+        >
+          Удалить
+        </Text>
+      </TouchableHighlight>
+    ];
+
     return (
       <View>
+         <StatusBar backgroundColor="blue" barStyle="dark-content" />
+           
+
+    
         {this.state.preLoader && <AppLoader />}
 
         <SearchAdd
@@ -122,56 +187,71 @@ class DiaryScreen extends Component {
 
         <View style={styles.listWrap}>
           <View>
-            <ScrollView style={{ marginBottom: 305 }}>
-              {this.state.dayIngredients.length < 1 ? (
-                <Text>Здесь будет отображаться Ваш рацион!</Text>
-              ) : (
-                <>
-                  <View style={styles.ingridientLiHeader}>
-                    <Text style={styles.aboutTextProduct}>Продукт :</Text>
-                    <Text style={styles.aboutText}>Калории :</Text>
-                    <Text style={styles.aboutText}>Граммы :</Text>
-                    <View style={{ width: 25 }} />
-                  </View>
-                  <FlatGrid
-                    itemDimension={200}
-                    items={this.state.dayIngredients}
-                    renderItem={({ item }) => (
-                      <View style={styles.ingridientLi}>
-                        <View style={styles.productConteiner}>
-                          <Text>{item.title.ru}</Text>
-                        </View>
-                        <View>
-                          <Text>{item.calories}</Text>
-                        </View>
-                        <View style={styles.gramConteiner}>
-                          <Text>{item.weight}</Text>
-                        </View>
+  
+            {this.state.dayIngredients.length < 1 ? (
+              <Text>Здесь будет отображаться Ваш рацион!</Text>
+            ) : (
+              <>
+                <View style={styles.ingridientLiHeader}>
+                  <Text style={styles.aboutTextProduct}>Продукт</Text>
+                  <Text style={styles.aboutText}>Калории</Text>
+                  <Text style={styles.aboutText}>Граммы</Text>
+                </View>
 
-                        <TouchableOpacity
-                          id={item._id}
-                          onPress={() =>
-                            setTimeout(() => {
-                              this.onRemoveItem(item._id);
-                            }, 0)
+                <ScrollView style={{ marginBottom: 305 }}    refreshControl={
+        <RefreshControl
+          colors={["#1e90ff"]}
+          refreshing={this.state.refresh}
+          onRefresh={this.refreshTable}
+        />
+      }>
+                  <SwipeListView style={{marginBottom: 100}}
+                    itemDimension={200}
+                    data={this.state.dayIngredients}
+                    renderItem={({ item }) => (
+                      <Swipeable
+                        rightButtons={rightButtons(item._id)}
+                        rightButtonWidth={100}
+                        onRightButtonsOpenRelease={(
+                          event,
+                          gestureState,
+                          swipeable
+                        ) => {
+                          if (
+                            currentlyOpenSwipeable &&
+                            currentlyOpenSwipeable !== swipeable
+                          ) {
+                            currentlyOpenSwipeable.recenter();
                           }
-                          style={styles.btnDeleteIngridiend}
-                          keyExtractor={item => item.id}
-                        >
-                          <MaterialCommunityIcons
-                            name="delete"
-                            size={15}
-                            color="white"
-                          />
-                        </TouchableOpacity>
-                      </View>
+
+                          this.setState({ currentlyOpenSwipeable: swipeable });
+                        }}
+                        onRightButtonsCloseRelease={() =>
+                          this.setState({ currentlyOpenSwipeable: null })
+                        }
+                      >
+                        <View style={styles.ingridientLi}>
+                          <View style={styles.productConteiner}>
+                            <Text>{item.title.ru}</Text>
+                          </View>
+                          <View style={styles.calloriesContainer}>
+                            <Text style={styles.calloriesText}>
+                              {item.calories}
+                            </Text>
+                          </View>
+                          <View style={styles.gramConteiner}>
+                            <Text style={styles.gramText}>{item.weight}</Text>
+                          </View>
+                        </View>
+                      </Swipeable>
                     )}
                     keyExtractor={item => item._id}
                   />
-                </>
-              )}
-            </ScrollView>
+                </ScrollView>
+              </>
+            )}
           </View>
+      
         </View>
 
         {this.state.calendarIsOpen ? (
@@ -224,13 +304,13 @@ const styles = StyleSheet.create({
   },
   calendarTitle: {
     fontFamily: "open-regular",
-    fontSize: 18,
+    fontSize: 16,
     color: "#444"
   },
   calendarData: {
     paddingLeft: 5,
     fontFamily: "open-bold",
-    fontSize: 18,
+    fontSize: 16,
     color: "#444"
   },
   horizontLine: {
@@ -246,11 +326,11 @@ const styles = StyleSheet.create({
     borderRadius: 100
   },
   ingridientLi: {
-    display: "flex",
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 10,
+    height: 90,
     borderBottomWidth: 0.5,
     borderBottomColor: "lightgrey"
   },
@@ -261,22 +341,47 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: "lightgrey"
+    borderBottomColor: "lightgrey",
+    borderTopWidth: 0.5,
+    borderTopColor: "lightgrey",
+    backgroundColor: "orange"
   },
   aboutText: {
-    fontFamily: "open-bold"
+    fontFamily: "open-bold",
+    width: "25%",
+    textAlign: "center",
+    color: "white"
   },
   aboutTextProduct: {
-    paddingLeft: 10,
     fontFamily: "open-bold",
-    width: 120
+    width: "50%",
+    textAlign: "center",
+    color: "white"
   },
   productConteiner: {
-    width: 120
+    width: "50%",
+    paddingLeft: 10,
+    paddingRight: 10
   },
   gramConteiner: {
-    width: 40,
+    width: "25%",
     alignContent: "center",
-    marginLeft: 40
+    textAlign: "center"
+  },
+  gramText: {
+    textAlign: "center",
+    fontFamily: "open-bold"
+  },
+  calloriesContainer: {
+    width: "25%",
+    textAlign: "center",
+    backgroundColor: "orange",
+    paddingVertical: 10,
+    borderRadius: 20
+  },
+  calloriesText: {
+    textAlign: "center",
+    fontFamily: "open-bold",
+    color: "white"
   }
 });

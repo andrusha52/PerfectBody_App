@@ -57,6 +57,7 @@ class CulcScreen extends Component {
     }
   };
 
+
   handleSubmit = async () => {
     if (Number(this.state.height) > 50 && Number(this.state.height) < 230) {
       if (Number(this.state.age) > 18 && Number(this.state.age) < 99) {
@@ -137,15 +138,15 @@ class CulcScreen extends Component {
    
   }
 
+
   handleChange = (name, value) => {
     this.setState({ [name]: value===""? "" : Number(value) });
-  }
+  };
   handleChangeSelect=(value)=>{
     this.setState({groupBlood:value})
   }
 
   render() {
-
     const {
       height,
       age,
@@ -154,7 +155,7 @@ class CulcScreen extends Component {
       groupBlood,
       isModalVisible,
       productsByBloodType
-    } = this.state
+    } = this.state;
 
     return (
       <>
@@ -241,7 +242,7 @@ class CulcScreen extends Component {
 
           <View style={styles.buttonBlock}>
             <TouchableOpacity onPress={this.handleSubmit} style={styles.button}>
-              <Text style={styles.buttonText}>Похудеть</Text>
+              <Text style={styles.buttonText}>Сохранить</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

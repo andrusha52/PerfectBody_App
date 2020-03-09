@@ -8,7 +8,8 @@ import {
   View,
   Animated,
   Easing,
-  Alert
+  Alert,
+  StatusBar
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { userData } from "../../redux/act";
@@ -125,11 +126,11 @@ class InitialInfo extends Component {
   };
 
   handleChange = (name, value) => {
-    this.setState({ [name]:value===""?"": Number(value) });
+    this.setState({ [name]: value === "" ? "" : Number(value) });
   };
-  handleChangeSelect=(value)=>{
-    this.setState({groupBlood:value})
-  }
+  handleChangeSelect = value => {
+    this.setState({ groupBlood: value });
+  };
 
   render() {
     const {
@@ -143,6 +144,8 @@ class InitialInfo extends Component {
 
     return (
       <>
+               <StatusBar backgroundColor="blue" barStyle="dark-content" />
+
         {errorInForm &&
           Alert.alert(
             "Некорректные данные",
@@ -167,7 +170,6 @@ class InitialInfo extends Component {
               minLength={1}
               maxLength={3}
               returnKeyType="done"
-
               id="height"
               style={styles.input}
               label={"Height *"}
@@ -216,15 +218,13 @@ class InitialInfo extends Component {
                 placeholder={{
                   label: "Группа крови *",
                   value: null,
-                  color: "#bebebe"
+                  color: "grey"
                 }}
                 selectedValue={groupBlood}
-                onValueChange={(value) =>{ this.handleChangeSelect(value)}}
-                style={{
-                  placeholder: {
-                    color: '#bebebe',
-                  },
+                onValueChange={value => {
+                  this.handleChangeSelect(value);
                 }}
+                style={styles.selector}
                 Icon={() => {
                   return (
                     <Ionicons
