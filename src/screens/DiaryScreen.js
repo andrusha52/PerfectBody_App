@@ -205,7 +205,7 @@ class DiaryScreen extends Component {
           onRefresh={this.refreshTable}
         />
       }>
-                  <SwipeListView style={{marginBottom: 100}}
+                  <SwipeListView style={{marginBottom: 162}}
                     itemDimension={200}
                     data={this.state.dayIngredients}
                     renderItem={({ item }) => (
