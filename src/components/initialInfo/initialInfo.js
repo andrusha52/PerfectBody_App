@@ -114,7 +114,7 @@ class InitialInfo extends Component {
         }
       }
     } else {
-      this.setState({
+     await this.setState({
         errorInForm: true
       });
       setTimeout(() => {
